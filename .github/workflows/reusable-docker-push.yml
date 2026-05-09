@@ -6,6 +6,14 @@ on:
       image_name:
         required: true
         type: string
+      # ADD THIS NEW INPUT:
+      build_context:
+        required: false
+        type: string
+        default: "."
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build-and-push:
@@ -34,7 +42,8 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          # USE THE INPUT HERE:
+          context: ${{ inputs.build_context }}
           push: true
           tags: |
             ghcr.io/${{ env.REPO_LC }}:latest
